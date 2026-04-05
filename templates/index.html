@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block head %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="{{ url_for('static', filename='js/map.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+<section class="hero hero-centered">
+    <h1>Terra Alert</h1>
+    <p>
+        AI-Based Early Disaster Warning System
+    </p>    
+     <p>
+        Intelligent disaster risk estimation platform that analyzes real-time data to provide early warnings and awareness guidance for various natural disasters.
+    </p>
+    <a class="button" href="{{ url_for('dashboard') }}">View Dashboard</a>
+</section>
+
+<section class="feature-grid">
+    <div>
+        <h3>AI Classification</h3>
+        <p>Detects floods, earthquakes, heatwaves, and cyclones from recent reports.</p>
+    </div>
+    <div>
+        <h3>Location Insights</h3>
+        <p>Filters risk analysis by your location or live coordinates.</p>
+    </div>
+    <div>
+        <h3>Awareness Guidance</h3>
+        <p>Shows practical precautions for each disaster type.</p>
+    </div>
+</section>
+
+{% if permanent_location %}
+<section class="panel">
+    <h3>Your Permanent Location</h3>
+    <p>{{ permanent_location.location_name or (permanent_location.latitude ~ ',' ~ permanent_location.longitude) }}</p>
+    <div id="home-map" class="location-map"></div>
+    <div
+        id="home-risk-notification"
+        class="alert"
+        role="status"
+        aria-live="polite"
+        style="display:none; margin-top: 14px;"
+    ></div>
+</section>
+{% endif %}
+{% endblock %}

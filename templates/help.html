@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="help-section">
+    <div class="help-contacts">
+        <div class="help-header">
+            <h1>Emergency Help & Contact Numbers</h1>
+            <p class="help-description">
+                Contact these emergency services immediately during disasters or emergencies:
+            </p>
+        </div>
+
+        {% for contact in contacts %}
+            <div class="contact-card">
+                <div class="contact-name">{{ contact.name }}</div>
+                <div class="contact-phone">{{ contact.phone }}</div>
+                {% if contact.description %}
+                    <div class="contact-description">{{ contact.description }}</div>
+                {% endif %}
+            </div>
+        {% endfor %}
+
+    </div>
+</section>
+{% endblock %}

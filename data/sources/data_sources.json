@@ -1,0 +1,46 @@
+{
+  "sources": [
+    {
+      "name": "USGS Earthquakes (All Day)",
+      "type": "geojson_usgs",
+      "url": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson",
+      "default_type": "earthquake"
+    },
+    {
+      "name": "GDACS Floods (7 days)",
+      "type": "rss",
+      "url": "https://www.gdacs.org/xml/rss_fl_7d.xml",
+      "default_type": "flood"
+    },
+    {
+      "name": "GDACS Tropical Cyclones (7 days)",
+      "type": "rss",
+      "url": "https://www.gdacs.org/xml/rss_tc_7d.xml",
+      "default_type": "cyclone"
+    },
+    {
+      "name": "NHC Atlantic Tropical Cyclones",
+      "type": "rss",
+      "url": "https://www.nhc.noaa.gov/index-at.xml",
+      "default_type": "cyclone"
+    },
+    {
+      "name": "NHC Eastern Pacific Tropical Cyclones",
+      "type": "rss",
+      "url": "https://www.nhc.noaa.gov/index-ep.xml",
+      "default_type": "cyclone"
+    },
+    {
+      "name": "NWS Heat Advisory",
+      "type": "nws_alerts",
+      "url": "https://api.weather.gov/alerts/active?event=Heat%20Advisory",
+      "default_type": "heatwave"
+    },
+    {
+      "name": "NWS Excessive Heat Warning",
+      "type": "nws_alerts",
+      "url": "https://api.weather.gov/alerts/active?event=Excessive%20Heat%20Warning",
+      "default_type": "heatwave"
+    }
+  ]
+}

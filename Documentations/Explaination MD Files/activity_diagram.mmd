@@ -1,0 +1,15 @@
+stateDiagram-v2
+    [*] --> InputLocation: User Submits Dashboard Form
+    InputLocation --> ValidateLocation: parse_location_input()
+    ValidateLocation --> FetchData: collect_disaster_data()
+    FetchData --> ModelClassification: classify_reports()
+    
+    ModelClassification --> FilterTarget: filter_by_location()
+    FilterTarget --> StoreReports: insert_reports()
+    
+    StoreReports --> CalcRisk: calculate_risk_summary()
+    CalcRisk --> GenAlerts: generate_alerts()
+    GenAlerts --> DigdDetection: detect_information_gaps()
+    
+    DigdDetection --> RenderUI: Return Jinja Template context
+    RenderUI --> [*]

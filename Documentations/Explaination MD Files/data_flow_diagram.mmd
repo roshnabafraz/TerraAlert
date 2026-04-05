@@ -1,0 +1,11 @@
+graph LR
+    User(Geographic Target Input) --> WebService[REST Process Handling]
+    AgencyFeeds((JSON / RSS Providers)) --> DataCollector[Data Collection Process]
+    WebService --> DataCollector
+    
+    DataCollector --> MLClass[ML Classification Engine]
+    MLClass --> DB[(SQLite Reports Table)]
+    MLClass --> RiskEngine[Risk Math Evaluator]
+    
+    RiskEngine --> DB2[(SQLite Alerts Table)]
+    RiskEngine --> Outputs(Mapped UI Render Context)

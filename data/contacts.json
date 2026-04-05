@@ -1,0 +1,34 @@
+{
+  "contacts": [
+    {
+      "name": "Emergency (Police)",
+      "phone": "15",
+      "description": "General emergency number for law enforcement"
+    },
+    {
+      "name": "Rescue Services",
+      "phone": "1122",
+      "description": "Ambulance, fire & rescue services"
+    },
+    {
+      "name": "Fire Brigade",
+      "phone": "16",
+      "description": "Fire emergencies and rescue operations"
+    },
+    {
+      "name": "Ambulance",
+      "phone": "115",
+      "description": "Medical emergency transport services"
+    },
+    {
+      "name": "Earthquake Response",
+      "phone": "+92 51 9245400",
+      "description": "Seismic emergency coordination"
+    },
+    {
+      "name": "Disaster Management Authority",
+      "phone": "1129",
+      "description": "National disaster management coordination"
+    }
+  ]
+}

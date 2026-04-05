@@ -1,0 +1,26 @@
+graph TD
+    subgraph TerraAlert Flask Application
+        C_Routes[app/routes.py] 
+        C_Config[app/config.py]
+        
+        subgraph Services Layer
+            S_Collector[data_collector.py]
+            S_Classifier[classifier.py]
+            S_Risk[risk_calculator.py]
+            S_Alerts[alert_generator.py]
+        end
+        
+        subgraph Models Layer
+            M_DB[database.py]
+            M_Disaster[disaster_model.py]
+        end
+        
+        C_Routes --> S_Collector
+        C_Routes --> S_Classifier
+        C_Routes --> S_Risk
+        C_Routes --> S_Alerts
+        
+        S_Classifier --> S_Collector
+        S_Alerts --> M_DB
+        C_Routes --> M_DB
+    end

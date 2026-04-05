@@ -1,0 +1,24 @@
+{
+  "types": {
+    "flood": [
+      "Move to higher ground when safe to do so.",
+      "Avoid walking or driving through flood water.",
+      "Prepare an emergency kit with food, water, and medication."
+    ],
+    "earthquake": [
+      "Drop, cover, and hold on during shaking.",
+      "Stay away from windows and heavy objects.",
+      "After shaking stops, check for injuries and hazards."
+    ],
+    "heatwave": [
+      "Stay hydrated and avoid outdoor activity at peak heat.",
+      "Use fans or shaded areas to cool down.",
+      "Check on vulnerable family members."
+    ],
+    "cyclone": [
+      "Secure loose outdoor items and windows.",
+      "Follow evacuation instructions from local authorities.",
+      "Keep battery-powered lights and charged devices ready."
+    ]
+  }
+}

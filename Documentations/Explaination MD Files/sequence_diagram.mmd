@@ -1,0 +1,20 @@
+sequenceDiagram
+    participant User
+    participant Frontend as map.js
+    participant Server as Flask API
+    participant DB as SQLite
+    
+    User->>Frontend: Loads Landing Page
+    Frontend->>Server: GET /api/permanent-location?user_id=default_user
+    Server->>DB: SELECT location_name, lat, lon
+    DB-->>Server: Return dict
+    Server-->>Frontend: JSON payload
+    Frontend->>Server: GET /api/risk?location=<coord>
+    Server->>Server: _build_dashboard_context()
+    Server-->>Frontend: JSON { risk_summary: { percentage: ... } }
+    
+    alt percentage >= 20%
+        Frontend->>User: Display "#home-risk-notification" (High Risk!)
+    else percentage < 20%
+        Frontend->>User: Keep notification hidden
+    end

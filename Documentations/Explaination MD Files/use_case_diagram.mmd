@@ -1,0 +1,22 @@
+graph LR
+    %% Actors
+    User((Guest User))
+    APIs((External APIs))
+    
+    %% System Bounds
+    subgraph TerraAlert System
+        UC1(View Dashboard Map)
+        UC2(Analyze Location Risk)
+        UC3(Set Permanent Location)
+        UC4(View Guidance & Alerts)
+        UC5(Classify Disaster Reports)
+    end
+    
+    %% Relationships
+    User --> UC1
+    User --> UC2
+    User --> UC3
+    User --> UC4
+    
+    UC2 --> UC5
+    UC5 --> APIs

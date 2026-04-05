@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="panel">
+    <h2>Awareness & Precautionary Guidance</h2>
+    {% if precautions %}
+        {% for dtype, tips in precautions.items() %}
+            <div class="guidance-block">
+                <h3>{{ dtype|capitalize }}</h3>
+                <ul class="list">
+                    {% for tip in tips %}
+                        <li>{{ tip }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No guidance data available.</p>
+    {% endif %}
+</section>
+{% endblock %}

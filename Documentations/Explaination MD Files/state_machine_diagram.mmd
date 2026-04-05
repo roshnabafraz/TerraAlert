@@ -1,0 +1,13 @@
+stateDiagram-v2
+    [*] --> RawPayload: Retrieved from USGS/GDACS
+    RawPayload --> Normalized: _normalize_items()
+    Normalized --> Classified: classify_reports() + TF-IDF Model
+    Classified --> FilteredLocally: filter_by_location()
+    
+    state Evaluated {
+       [*] --> RiskScoreAssigned: calculate_risk_summary()
+       RiskScoreAssigned --> DecayMatched: e^(-age_days / half_life)
+    }
+    
+    FilteredLocally --> Evaluated
+    Evaluated --> [*] : Stored as SQLite Log

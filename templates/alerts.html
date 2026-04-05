@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="panel">
+    <h2>Early Warning Alerts</h2>
+    {% if alerts %}
+        <ul class="list">
+            {% for alert in alerts %}
+                <li class="alert {{ alert.level }}">
+                    <strong>{{ alert.message }}</strong>
+                    {% if alert.created_at %}
+                        <div class="meta">{{ alert.created_at }}{% if alert.location %} · {{ alert.location }}{% endif %}</div>
+                    {% endif %}
+                    {% if alert.risk_percentage is not none %}
+                        <div class="meta">Risk score: {{ alert.risk_percentage }}%</div>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No alerts at the moment.</p>
+    {% endif %}
+</section>
+{% endblock %}

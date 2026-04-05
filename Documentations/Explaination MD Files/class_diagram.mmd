@@ -1,0 +1,21 @@
+classDiagram
+    class Config {
+        +Path BASE_DIR
+        +Path DB_PATH
+        +String SECRET_KEY
+        +Int RISK_WINDOW_DAYS
+        +Float RISK_HALF_LIFE_DAYS
+        +Int MEDIUM_RISK_THRESHOLD
+        +Int HIGH_RISK_THRESHOLD
+    }
+    
+    class DisasterReport {
+        +String title
+        +String content
+        +String source
+        +String published_at
+        +String location
+        +String disaster_type
+        +String severity
+        +to_dict() dict
+    }

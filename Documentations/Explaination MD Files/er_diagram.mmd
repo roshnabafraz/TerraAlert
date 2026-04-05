@@ -1,0 +1,28 @@
+erDiagram
+    DISASTER_REPORTS {
+        integer id PK
+        string title
+        text content
+        string source
+        string published_at
+        string location
+        string disaster_type
+        string severity
+        string created_at
+    }
+    
+    ALERTS {
+        integer id PK
+        string created_at
+        string location
+        string disaster_type
+        string level
+        string message
+        real risk_percentage
+    }
+    
+    GUIDANCE {
+        integer id PK
+        string disaster_type
+        text tips
+    }

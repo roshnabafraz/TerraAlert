@@ -1,0 +1,11 @@
+graph TD
+    Client[Browser Frontend JS/Leaflet] -->|HTTP GET/POST| Flask[Flask Routes / Controller]
+    
+    subgraph Backend Server Context
+        Flask --> Services[Service Layer / Business Logic]
+        Services <--> ML[Machine Learning Classifier]
+        Services <--> Calculator[Risk Calculator & Thresholds]
+        Services <--> DB[(SQLite Database)]
+    end
+    
+    Services -->|HTTP requests| ExtAPIs[USGS, NOAA, GDACS Feeds]

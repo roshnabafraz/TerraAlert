@@ -1,0 +1,20 @@
+graph TD
+    node1((Leaflet CDN)) --> Client
+    
+    subgraph Client Device
+        Client[Web Browser / DOM]
+    end
+    
+    subgraph CloudApp[Cloud Application Host WSGI/Vercel]
+        FlaskServer[Gunicorn Web Process]
+    end
+    
+    subgraph Storage[File Storage Runtime]
+        SQLite[(terra_alert.db)]
+        Model[(disaster_classifier.pkl)]
+    end
+    
+    Client -->|HTTPS / Dashboard Form| FlaskServer
+    FlaskServer --> SQLite
+    FlaskServer --> Model
+    FlaskServer --> External[NWS / USGS Services]

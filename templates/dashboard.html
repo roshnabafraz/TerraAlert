@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="{{ url_for('static', filename='js/map.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-shell">
+    <div
+        id="dashboard-risk-indicator"
+        class="live-indicator"
+        style="display:none;"
+        role="status"
+        aria-live="polite"
+    ></div>
+
+<section class="panel primary-panel">
+    <h2>Disaster Risk Dashboard</h2>
+    <form method="post" class="location-form">
+        <div id="location-map" class="location-map"></div>
+        <div class="location-inputs">
+            <label for="location">Location</label>
+            <input id="location" name="location" type="text" placeholder="City or lat,lon" value="{{ location or '' }}" />
+            <button type="submit">Analyze</button>
+            <button type="button" class="secondary" id="use-location">Use My Location</button>
+            <button type="button" id="set-permanent-btn" class="secondary">
+                {% if permanent_location %}✓ Set as Permanent{% else %}Set as Permanent Location{% endif %}
+            </button>
+            {% if permanent_location %}
+            <button type="button" id="remove-permanent-btn" class="secondary" style="background: var(--high); color:#fff;">
+                Remove Permanent Location
+            </button>
+            {% endif %}
+        </div>
+    </form>
+</section>
+
+<section class="panel metrics-panel">
+    <h3>Overall Risk</h3>
+    {% if risk_summary and risk_summary.overall %}
+        <div class="risk-card {{ risk_summary.overall.level }}">
+            <div class="risk-level">{{ risk_summary.overall.level|capitalize }}</div>
+            <div class="risk-percent">{{ risk_summary.overall.percentage }}%</div>
+            <div class="risk-type">Top Type: {{ risk_summary.overall.top_type }}</div>
+        </div>
+    {% else %}
+        <p>No recent reports available.</p>
+    {% endif %}
+</section>
+
+<section class="panel grid metrics-row">
+    <div>
+        <h3>Risk By Type</h3>
+        {% if risk_summary and risk_summary.by_type %}
+            <ul class="list">
+                {% for dtype, info in risk_summary.by_type.items() %}
+                    <li>{{ dtype|capitalize }}: {{ info.percentage }}% ({{ info.level }})</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No categorized data yet.</p>
+        {% endif %}
+    </div>
+    <div>
+        <h3>Information Gaps (DIGD)</h3>
+        {% if gaps %}
+            <ul class="list">
+                {% for gap in gaps %}
+                    <li>{{ gap.location }} ({{ gap.reason }})</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No gaps detected.</p>
+        {% endif %}
+    </div>
+</section>
+
+<section class="panel event-log-panel">
+    <h3>Recent Reports</h3>
+    {% if reports %}
+        <ul class="list">
+            {% for report in reports %}
+                <li>
+                    <strong>{{ report.title }}</strong>
+                    <div class="meta">{{ report.disaster_type }} | {{ report.location }} | {{ report.published_at }}</div>
+                    <div>{{ report.content }}</div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No reports found for this location.</p>
+    {% endif %}
+</section>
+</div>
+{% endblock %}

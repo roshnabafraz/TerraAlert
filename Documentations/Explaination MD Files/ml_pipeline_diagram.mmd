@@ -1,0 +1,18 @@
+graph LR
+    subgraph Offline Training Phase
+        Data(training_data.csv) --> Split[train_test_split 80/20]
+        Split -->|X_train| TFIDF[TfidfVectorizer 'min_df=1']
+        TFIDF --> LR[LogisticRegression 'max_iter=1000']
+        LR --> Pickle(.pkl Binary Export)
+        
+        Split -->|X_test / y_test| Eval[classification_report]
+        Eval --> Metrics(metrics.json)
+    end
+    
+    subgraph Online Production Inference
+        ReportString(Normalized Text Payload) --> LoadPickle[joblib.load]
+        LoadPickle --> Pred[model.predict]
+        Pred --> Fallback{If Error?}
+        Fallback -->|Yes| Heuristics(Keyword Matching)
+        Fallback -->|No| OutputResult(Disaster Tag Label)
+    end
