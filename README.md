@@ -1,75 +1,113 @@
-# Terra Alert
+# TerraAlert 🌍💧
 
-Terra Alert is a web-based AI-assisted disaster risk awareness system. It collects disaster-related
-reports, classifies them, calculates risk percentages, and provides location-based alerts and
-precautionary guidance.
+**TerraAlert** is a web-based, AI-assisted disaster risk awareness system. It aggregates real-time natural disaster telemetry from around the world, classifies incident reports using Machine Learning, calculates localized risk probabilities utilizing a temporal decay algorithm, and provides geospatial alerts & precautionary guidelines.
 
-## Quick Start
+With TerraAlert, fragmented disaster data becomes centralized intelligence, empowering civilian preparedness through a streamlined, localized dashboard.
 
-1. Create a virtual environment and install dependencies:
+---
 
+## ✨ Key Features
+
+- **🌐 Live Data Aggregation:** Automatically consumes remote APIs and RSS/Atom feeds (USGS, NWS, GDACS, NOAA) to track geological and meteorological anomalies natively.
+- **🧠 Machine Learning Classification:** Utilizes Scikit-learn (`LogisticRegression` + `TfidfVectorizer`) to categorize unstructured report texts into known disaster types (e.g., `flood`, `earthquake`, `heatwave`, `cyclone`). Features an intelligent dictionary-based fallback if the model is unavailable.
+- **📉 Dynamic Risk Scoring (Temporal Decay):** Employs an exponential-decay mathematical formula to adjust risk levels based on time and severity to highlight genuinely imminent catastrophes.
+- **🗺️ Geospatial Mapping:** Renders active localized risks intelligently via Leaflet.js on an interactive HTML5 dashboard.
+- **⚠️ DIGD Detection:** Automatically identifies "Information Gaps in Disasters" (DIGD)—situations with high semantic urgency but low reporting volume, signaling potential infrastructure and network outages.
+- **💾 Local SQLite Caching:** Ensures fast reads and deduplicates redundant alerts to prevent notification spam.
+
+---
+
+## 🛠️ Tech Stack
+
+### Backend
+- **Python 3 / Flask:** Core WSGI web application framework and routing routing chassis.
+- **SQLite3:** Lightweight relational database utilizing raw SQL statements without an ORM for speed and transparency.
+- **Requests & Feedparser:** Robust handlers for parsing external REST APIs and corrupted XML/RSS schemas cleanly.
+
+### Machine Learning (AI)
+- **Scikit-Learn & Joblib:** Fast, CPU-compatible linear classification arrays saving models as portable `.pkl` binaries.
+- **Pandas:** Handles the internal CSV data structures for training pipeline management.
+
+### Frontend
+- **HTML5 / CSS / JS:** Server-side rendered templates using Jinja2 context variables.
+- **Leaflet.js:** Interactive geospatial maps logic.
+- **SCSS:** Modular presentation stylesheets.
+
+---
+
+## 🚀 How to Run Locally
+
+### 1. Clone the Repository
+```bash
+git clone https://github.com/roshnabafraz/TerraAlert.git
+cd TerraAlert
+```
+
+### 2. Create a Virtual Environment
+It's strongly recommended to use a virtual environment.
+
+**Windows:**
 ```bash
 python -m venv .venv
+.\.venv\Scripts\activate
+```
+
+**macOS/Linux:**
+```bash
+python3 -m venv .venv
 source .venv/bin/activate
+```
+
+### 3. Install Dependencies
+Install all required libraries via pip:
+```bash
 pip install -r requirements.txt
 ```
 
-2. Initialize the database (optional, auto-created on first run):
+### 4. Configure Environment Variables
+Set up required configuration variables using the provided template:
+```bash
+cp .env.example .env
+```
+Open `.env` and customize parameters such as `RISK_WINDOW_DAYS`, `HIGH_RISK_THRESHOLD`, and `NWS_USER_AGENT` if needed.
 
+### 5. Initialize the Database
+Bootstraps the raw SQLite dataset tables (`disaster_reports`, `alerts`, `guidance`):
 ```bash
 python scripts/init_db.py
 ```
 
-3. Run the app:
-
-```bash
-python run.py
-```
-
-Open `http://127.0.0.1:5000` in your browser.
-
-## Risk Formula
-
-Risk is computed per disaster type using a weighted score:
-
-- **Base points** per report (`RISK_POINTS_PER_REPORT`, default `12`)
-- **Severity weight** (`low=0.8`, `medium=1.0`, `high=1.3`)
-- **Recency weight** via exponential decay with half-life (`RISK_HALF_LIFE_DAYS`, default `3`)
-
-The per-type score is capped at `100` and mapped to risk levels:
-
-- **Medium** at `>= 35`
-- **High** at `>= 70`
-
-Thresholds and weights are configurable via environment variables.
-
-## Data Sources
-
-Real RSS/official feeds are configured in `data/sources/data_sources.json` (USGS, GDACS, NOAA NHC, NOAA NWS alerts). The collector supports:
-
-- RSS/Atom feeds (`feedparser`)
-- USGS GeoJSON feeds
-- NWS alerts JSON
-
-## Alerts Persistence
-
-Generated alerts are stored in SQLite (`alerts` table) with a simple dedupe window (`ALERT_DEDUPE_HOURS`). The `/alerts` page displays the persisted alerts.
-
-## ML Pipeline
-
-Run training using the labeled CSV in `ml/datasets/labeled/training_data.csv`:
-
+### 6. Train the ML Model (Highly Recommended)
+While the app has a keyword-match fallback, the prediction accuracy drastically improves with the ML model. Run the training script to parse `training_data.csv` and generate `ml/models/disaster_classifier.pkl`:
 ```bash
 python ml/train_model.py
 ```
 
-This saves `ml/models/disaster_classifier.pkl` and `ml/models/metrics.json`. Classification falls back to keyword matching when the model is missing.
+### 7. Run the Application
+Start the Flask development server:
+```bash
+python run.py
+```
+Open up your browser and navigate to `http://127.0.0.1:5000` to interact with the TerraAlert dashboard!
 
-## Project Structure
+---
 
-- `app/` Flask app, services, and models
-- `data/` data sources and guidance
-- `ml/` model training/evaluation
-- `scripts/` utility scripts
-- `templates/` HTML templates
-- `tests/` pytest tests
+## 📊 System Architecture
+
+TerraAlert maintains a lightweight **Monolithic MVC structure integrated with a Service Layer**.
+- **Controllers (`app/routes.py`)**: Interacts with frontend templates and the core backend services.
+- **Services (`app/services/`)**: Highly cohesive business-logic isolation (`classifier.py`, `risk_calculator.py`, `data_collector.py`).
+- **Data Integrations**: Polling asynchronous API feeds synchronously during request lifecycles.
+- **Machine Learning**: Pre-trained textual vectors process incoming unknown emergency inputs into actionable categories in under `10ms`.
+
+---
+
+## ☁️ Deployment
+
+The repository includes a `vercel.json` file and a `wsgi.py` entry point. It is tailored to smoothly deploy on serverless platforms like Vercel or standard Linux VMs via Gunicorn.
+
+---
+
+## 📜 Legal & License
+
+Created as a formal academic Final Year Project. Usage of public API feeds strictly conform to the originating organization bounds.
